@@ -6,7 +6,7 @@ public class HazardVolume : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
-
+            other.GetComponent<PlayerRespawn>().Die();
         }
     }
 }
