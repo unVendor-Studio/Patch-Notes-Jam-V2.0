@@ -13,8 +13,7 @@ public class MusicManager : MonoBehaviour
 
     [Header("Dedicated Looping Sources (Player/Global)")]
     [SerializeField] private AudioSource sprintLoopSource;
-    [SerializeField] private AudioSource slideLoopSource;
-    [SerializeField] private AudioSource environmentLoopSource; // For ambient states like charging or momentum wind
+    [SerializeField] private AudioSource environmentLoopSource; // For ambient states like charging
 
     [Header("UI Volume Sliders")]
     [SerializeField] private Slider masterSlider;
@@ -51,24 +50,16 @@ public class MusicManager : MonoBehaviour
     [SerializeField, Range(0f, 2f)] private float swapToFutureVolume = 1f;
 
     [Header("Player Movement")]
-    [SerializeField] private AudioClip futureFootsteps;
-    [SerializeField, Range(0f, 2f)] private float futureFootstepsVolume = 1f;
-    [SerializeField] private AudioClip pastFootsteps;
-    [SerializeField, Range(0f, 2f)] private float pastFootstepsVolume = 1f;
+    [SerializeField] private AudioClip footsteps;
+    [SerializeField, Range(0f, 2f)] private float footstepsVolume = 1f;
     [SerializeField] private AudioClip jumpSound;
     [SerializeField, Range(0f, 2f)] private float jumpSoundVolume = 1f;
-    [SerializeField] private AudioClip lightLanding;
-    [SerializeField, Range(0f, 2f)] private float lightLandingVolume = 1f;
-    [SerializeField] private AudioClip heavyLanding;
-    [SerializeField, Range(0f, 2f)] private float heavyLandingVolume = 1f;
     [SerializeField] private AudioClip sprintLoop;
     [SerializeField, Range(0f, 2f)] private float sprintLoopVolume = 1f;
 
     [Header("Environment & Interactables")]
-    [SerializeField] private AudioClip blastDoor;
-    [SerializeField, Range(0f, 2f)] private float blastDoorVolume = 1f;
-    [SerializeField] private AudioClip vaultDoor;
-    [SerializeField, Range(0f, 2f)] private float vaultDoorVolume = 1f;
+    [SerializeField] private AudioClip doorSound;
+    [SerializeField, Range(0f, 2f)] private float doorSoundVolume = 1f;
     [SerializeField] private AudioClip cubeScrape;
     [SerializeField, Range(0f, 2f)] private float cubeScrapeVolume = 1f;
     [SerializeField] private AudioClip cubeThud;
@@ -85,40 +76,19 @@ public class MusicManager : MonoBehaviour
     [SerializeField, Range(0f, 2f)] private float gravityInversionVolume = 1f;
     [SerializeField] private AudioClip vacuumRoar; // Can be looped locally on the object
     [SerializeField, Range(0f, 2f)] private float vacuumRoarVolume = 1f;
-    [SerializeField] private AudioClip lavaBubbles;
-    [SerializeField, Range(0f, 2f)] private float lavaBubblesVolume = 1f;
 
     [Header("Level 3: Kite (Electricity)")]
-    [SerializeField] private AudioClip thunderstrike;
-    [SerializeField, Range(0f, 2f)] private float thunderstrikeVolume = 1f;
-    [SerializeField] private AudioClip electricChargeLoop; // Loop
-    [SerializeField, Range(0f, 2f)] private float electricChargeLoopVolume = 1f;
     [SerializeField] private AudioClip nodePowerUp;
     [SerializeField, Range(0f, 2f)] private float nodePowerUpVolume = 1f;
     [SerializeField] private AudioClip nodeAccessGranted;
     [SerializeField, Range(0f, 2f)] private float nodeAccessGrantedVolume = 1f;
-    [SerializeField] private AudioClip nodePowerDown;
-    [SerializeField, Range(0f, 2f)] private float nodePowerDownVolume = 1f;
 
     [Header("Level 4: The Prism (Light)")]
-    [SerializeField] private AudioClip lightTrapSizzle;
-    [SerializeField, Range(0f, 2f)] private float lightTrapSizzleVolume = 1f;
     [SerializeField] private AudioClip monsterRush;
     [SerializeField, Range(0f, 2f)] private float monsterRushVolume = 1f;
     [SerializeField] private AudioClip monsterRetreat;
     [SerializeField, Range(0f, 2f)] private float monsterRetreatVolume = 1f;
-    [SerializeField] private AudioClip eerieWindLoop; // Environmental Loop
-    [SerializeField, Range(0f, 2f)] private float eerieWindLoopVolume = 1f;
 
-    [Header("Level 5: Ice (Friction)")]
-    [SerializeField] private AudioClip momentumWindLoop; // Loop for compounding speed
-    [SerializeField, Range(0f, 2f)] private float momentumWindLoopVolume = 1f;
-    [SerializeField] private AudioClip slideScrapeLoop; // Loop
-    [SerializeField, Range(0f, 2f)] private float slideScrapeLoopVolume = 1f;
-    [SerializeField] private AudioClip ricochetClang;
-    [SerializeField, Range(0f, 2f)] private float ricochetClangVolume = 1f;
-    [SerializeField] private AudioClip gripBrake;
-    [SerializeField, Range(0f, 2f)] private float gripBrakeVolume = 1f;
 
     private void Awake()
     {
@@ -137,12 +107,9 @@ public class MusicManager : MonoBehaviour
     private void InitializeLoopSources()
     {
         if (sprintLoopSource == null) sprintLoopSource = gameObject.AddComponent<AudioSource>();
-        if (slideLoopSource == null) slideLoopSource = gameObject.AddComponent<AudioSource>();
         if (environmentLoopSource == null) environmentLoopSource = gameObject.AddComponent<AudioSource>();
 
         ConfigureLoopSource(sprintLoopSource, sprintLoop, sprintLoopVolume);
-        ConfigureLoopSource(slideLoopSource, slideScrapeLoop, slideScrapeLoopVolume);
-        // Environment loop is configured dynamically based on level needs
     }
 
     private void ConfigureLoopSource(AudioSource src, AudioClip clip, float baseVol)
@@ -210,13 +177,11 @@ public class MusicManager : MonoBehaviour
     {
         float sfxVol = masterSFXVolume * globalMasterVolume;
         if (sprintLoopSource != null) sprintLoopSource.volume = sprintLoopVolume * sfxVol;
-        if (slideLoopSource != null) slideLoopSource.volume = slideScrapeLoopVolume * sfxVol;
-        if (environmentLoopSource != null) environmentLoopSource.volume = sfxVol; // Adjusts based on active clip
+        if (environmentLoopSource != null) environmentLoopSource.volume = sfxVol;
     }
 
     // --- Dynamic Loop Controls ---
     public void SetSprintSound(bool isPlaying) => ToggleLoopSource(sprintLoopSource, sprintLoop, sprintLoopVolume, isPlaying);
-    public void SetSlideScrapeSound(bool isPlaying) => ToggleLoopSource(slideLoopSource, slideScrapeLoop, slideScrapeLoopVolume, isPlaying);
 
     public void SetEnvironmentLoop(AudioClip clip, float baseVol, bool isPlaying)
     {
@@ -278,15 +243,11 @@ public class MusicManager : MonoBehaviour
     public void PlaySwapToFuture(Vector3 pos) => PlaySFX(swapToFuture, pos, swapToFutureVolume);
 
     // --- Player Movement Callbacks ---
-    public void PlayFutureFootstep(Vector3 pos) => PlaySFX(futureFootsteps, pos, futureFootstepsVolume);
-    public void PlayPastFootstep(Vector3 pos) => PlaySFX(pastFootsteps, pos, pastFootstepsVolume);
+    public void PlayFootstep(Vector3 pos) => PlaySFX(footsteps, pos, footstepsVolume);
     public void PlayJumpSound(Vector3 pos) => PlaySFX(jumpSound, pos, jumpSoundVolume);
-    public void PlayLightLanding(Vector3 pos) => PlaySFX(lightLanding, pos, lightLandingVolume);
-    public void PlayHeavyLanding(Vector3 pos) => PlaySFX(heavyLanding, pos, heavyLandingVolume);
 
     // --- Environment & Interactables Callbacks ---
-    public void PlayBlastDoor(Vector3 pos) => PlaySFX(blastDoor, pos, blastDoorVolume);
-    public void PlayVaultDoor(Vector3 pos) => PlaySFX(vaultDoor, pos, vaultDoorVolume);
+    public void PlayDoorSound(Vector3 pos) => PlaySFX(doorSound, pos, doorSoundVolume);
     public void PlayCubeScrape(Vector3 pos) => PlaySFX(cubeScrape, pos, cubeScrapeVolume);
     public void PlayCubeThud(Vector3 pos) => PlaySFX(cubeThud, pos, cubeThudVolume);
 
@@ -294,17 +255,10 @@ public class MusicManager : MonoBehaviour
     public void PlayLaserBuzz(Vector3 pos) => PlaySFX(laserBuzz, pos, laserBuzzVolume);
     public void PlayGravityInversion(Vector3 pos) => PlaySFX(gravityInversion, pos, gravityInversionVolume);
     public void PlayVacuumRoar(Vector3 pos) => PlaySFX(vacuumRoar, pos, vacuumRoarVolume);
-    public void PlayLavaBubbles(Vector3 pos) => PlaySFX(lavaBubbles, pos, lavaBubblesVolume);
 
-    public void PlayThunderstrike(Vector3 pos) => PlaySFX(thunderstrike, pos, thunderstrikeVolume);
     public void PlayNodePowerUp(Vector3 pos) => PlaySFX(nodePowerUp, pos, nodePowerUpVolume);
     public void PlayNodeAccessGranted(Vector3 pos) => PlaySFX(nodeAccessGranted, pos, nodeAccessGrantedVolume);
-    public void PlayNodePowerDown(Vector3 pos) => PlaySFX(nodePowerDown, pos, nodePowerDownVolume);
 
-    public void PlayLightTrapSizzle(Vector3 pos) => PlaySFX(lightTrapSizzle, pos, lightTrapSizzleVolume);
     public void PlayMonsterRush(Vector3 pos) => PlaySFX(monsterRush, pos, monsterRushVolume);
     public void PlayMonsterRetreat(Vector3 pos) => PlaySFX(monsterRetreat, pos, monsterRetreatVolume);
-
-    public void PlayRicochetClang(Vector3 pos) => PlaySFX(ricochetClang, pos, ricochetClangVolume);
-    public void PlayGripBrake(Vector3 pos) => PlaySFX(gripBrake, pos, gripBrakeVolume);
 }
