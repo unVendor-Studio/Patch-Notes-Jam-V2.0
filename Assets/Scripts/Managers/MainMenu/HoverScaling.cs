@@ -1,5 +1,5 @@
 using UnityEngine;
-using UnityEngine.EventSystems; // Required for UI hovering
+using UnityEngine.EventSystems; 
 
 public class HoverScaling : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 {
@@ -18,16 +18,14 @@ public class HoverScaling : MonoBehaviour, IPointerEnterHandler, IPointerExitHan
 
     void Update()
     {
-        transform.localScale = Vector3.Lerp(transform.localScale, targetScale, Time.deltaTime * lerpSpeed);
+        transform.localScale = Vector3.Lerp(transform.localScale, targetScale, Time.unscaledDeltaTime * lerpSpeed);
     }
 
-    // Triggers when the mouse enters the UI graphic
     public void OnPointerEnter(PointerEventData eventData)
     {
         targetScale = originalScale * scaleMultiplier;
     }
 
-    // Triggers when the mouse leaves the UI graphic
     public void OnPointerExit(PointerEventData eventData)
     {
         targetScale = originalScale;
