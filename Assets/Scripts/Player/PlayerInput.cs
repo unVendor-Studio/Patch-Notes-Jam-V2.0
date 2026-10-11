@@ -38,6 +38,7 @@ public class PlayerInput : MonoBehaviour
     private float verticalVelocity;
     
     private bool wasUngroundedByJump;
+    private bool wasAirborne;
     private float timeSinceUngrounded;
     private float timeSinceJumpRequest;
 
@@ -59,6 +60,8 @@ public class PlayerInput : MonoBehaviour
 
     private void Update()
     {
+        animator.SetBool("WasAirborne", wasAirborne);
+        
         // Initial values
         var input = inputSystem.Player;
         var movement = input.Move.ReadValue<Vector2>();
@@ -138,27 +141,14 @@ public class PlayerInput : MonoBehaviour
             {
                 verticalVelocity = -2f;
             }
+
+            wasAirborne = false;
         }
         if (!IsGrounded)
         {
-            
             verticalVelocity -= gravity * Time.deltaTime; // Might want to change this out for gravity inverting
             timeSinceUngrounded += Time.deltaTime;
-            // Vector3 targetPlanarVelocity = Vector3.zero;
-            // if (moveDir.sqrMagnitude > 0.1f)
-            // {
-            //     var targetRotation = Mathf.Atan2(moveDir.x, moveDir.z) * Mathf.Rad2Deg + cmCamera.transform.eulerAngles.y;
-            //     var targetMovement = Quaternion.Euler(0f, targetRotation, 0f) * Vector3.forward;
-            //     var movementForce = Time.deltaTime * airAcceleration * targetMovement;
-            //     // targetPlanarVelocity = horizontalVelocity + movementForce;
-            //     // targetPlanarVelocity = targetMovement * maxAirSpeed;
-            //     horizontalVelocity = Vector3.RotateTowards(
-            //         current: horizontalVelocity,
-            //         target: targetMovement * horizontalVelocity.magnitude,
-            //         maxRadiansDelta: airAcceleration * Time.deltaTime,
-            //         maxMagnitudeDelta: 0f
-            //     );
-            // }
+            wasAirborne = true;
         }
 
         currentVelocity = horizontalVelocity;
