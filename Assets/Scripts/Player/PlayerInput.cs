@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using Unity.Cinemachine;
 using UnityEngine;
 
@@ -30,6 +31,7 @@ public class PlayerInput : MonoBehaviour
     public bool IsGrounded => controller.isGrounded;
     
     private InputSystem inputSystem;
+    private PickUpItems pickUp;
     private float currentSpeed;
     private Vector3 currentVelocity;
     private Vector3 horizontalVelocity;
@@ -51,7 +53,7 @@ public class PlayerInput : MonoBehaviour
     {
         requestedJump = false;
         Cursor.lockState = CursorLockMode.Locked;
-        
+        pickUp = GetComponent<PickUpItems>();
         var cmInput = cmCamera.GetComponent<CinemachineInputAxisController>();
     }
 
@@ -62,6 +64,8 @@ public class PlayerInput : MonoBehaviour
         var movement = input.Move.ReadValue<Vector2>();
         var jump = input.Jump.WasPressedThisFrame();
         var click = input.Attack.WasPressedThisFrame();
+        var rightClick = input.Aim.WasPressedThisFrame();
+        var interact = input.Interact.WasPressedThisFrame();
         
         bool wasRequestedJump = requestedJump;
         requestedJump = requestedJump || jump;
@@ -77,10 +81,17 @@ public class PlayerInput : MonoBehaviour
         
         
         // Executing
+        if (interact)
+        {
+            StartCoroutine(ToggleTimeRoutine());
+        }
+
         if (click)
         {
-            TimeManager.Instance.ToggleTime();
-            animator.SetTrigger("ToggleTime");
+            if (pickUp.IsHolding)
+                pickUp.PlaceDown();
+            else
+                pickUp.PickUp();
         }
         
         if (moveDir.sqrMagnitude >= 0.1f)
@@ -157,5 +168,12 @@ public class PlayerInput : MonoBehaviour
         animator.SetFloat("VelocityY", currentVelocity.y);
         animator.SetFloat("Speed", currentSpeed);
         animator.SetBool("IsGrounded", IsGrounded);
+    }
+
+    private IEnumerator ToggleTimeRoutine()
+    {
+        animator.SetTrigger("ToggleTime");
+        yield return new WaitForSeconds(0.2f);
+        TimeManager.Instance.ToggleTime();
     }
 }
