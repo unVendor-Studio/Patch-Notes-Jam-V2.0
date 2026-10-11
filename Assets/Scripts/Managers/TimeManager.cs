@@ -3,6 +3,7 @@ using UnityEngine;
 
 public class TimeManager : MonoBehaviour
 {
+    public static TimeManager Instance { get; private set; }
     // Global static event: true = Future, false = Past
     public static event Action<bool> OnTimeSwapped;
 
@@ -12,7 +13,7 @@ public class TimeManager : MonoBehaviour
     [SerializeField] private string futureLayerName = "Future";
     [SerializeField] private string pastLayerName = "Past";
     [SerializeField] private string playerLayerName = "Player";
-
+    
     private int futureLayer;
     private int pastLayer;
     private int playerLayer;
@@ -20,6 +21,8 @@ public class TimeManager : MonoBehaviour
 
     private void Awake()
     {
+        if (Instance == null)
+            Instance = this;
         mainCam = Camera.main;
         futureLayer = LayerMask.NameToLayer(futureLayerName);
         pastLayer = LayerMask.NameToLayer(pastLayerName);
@@ -28,15 +31,12 @@ public class TimeManager : MonoBehaviour
         ApplyTimeState(IsFuture);
     }
 
-    private void Update()
+    public void ToggleTime()
     {
-        if (Input.GetMouseButtonDown(1))
-        {
-            IsFuture = !IsFuture;
-            ApplyTimeState(IsFuture);
+        IsFuture = !IsFuture;
+        ApplyTimeState(IsFuture);
 
-            OnTimeSwapped?.Invoke(IsFuture);
-        }
+        OnTimeSwapped?.Invoke(IsFuture);
     }
 
     private void ApplyTimeState(bool futureActive)
