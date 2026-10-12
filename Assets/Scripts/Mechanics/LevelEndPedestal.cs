@@ -1,12 +1,34 @@
 using System.Collections;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class LevelEndPedestal : MonoBehaviour
 {
     [SerializeField] private string mainMenuSceneName = "MainMenu";
     [SerializeField] private string completionMessage = "Returning to ur house";
 
+    [SerializeField] private float spinSpeed = 90f;
+    [SerializeField] private float bobSpeed = 2f;
+    [SerializeField] private float bobHeight = 0.25f;
+
     private bool hasTriggered = false;
+    private Vector3 startPosition;
+
+    private void Start()
+    {
+        startPosition = transform.position;
+
+        if (TryGetComponent(out Rigidbody rb))
+        {
+            rb.isKinematic = true;
+        }
+    }
+
+    private void Update()
+    {
+        transform.Rotate(Vector3.up * spinSpeed * Time.deltaTime, Space.World);
+        transform.position = startPosition + new Vector3(0f, Mathf.Sin(Time.time * bobSpeed) * bobHeight, 0f);
+    }
 
     private void OnTriggerEnter(Collider other)
     {
@@ -19,27 +41,11 @@ public class LevelEndPedestal : MonoBehaviour
 
     private IEnumerator EndLevelSequence(GameObject player)
     {
-        if (player.TryGetComponent(out CharacterController cc))
-        {
-            cc.enabled = false;
-        }
-        if (player.TryGetComponent(out PlayerInput input))
-        {
-            input.enabled = false;
-        }
-
         if (AINarrator.Instance != null) AINarrator.Instance.Speak(completionMessage);
         if (MusicManager.Instance != null) MusicManager.Instance.PlayLevelEnterWarp();
 
-        yield return new WaitForSeconds(3.5f);
+        yield return new WaitForSeconds(2f);
 
-        if (ImFaded.Instance != null)
-        {
             ImFaded.Instance.FadeOutAndLoad(mainMenuSceneName);
-        }
-        else
-        {
-            UnityEngine.SceneManagement.SceneManager.LoadScene(mainMenuSceneName);
-        }
     }
 }

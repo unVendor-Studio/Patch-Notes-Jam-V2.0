@@ -1,4 +1,4 @@
-using Unity.Cinemachine;
+﻿using Unity.Cinemachine;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -7,23 +7,23 @@ public class PlayerPhysicsModifier : MonoBehaviour
 {
     [SerializeField] private Transform characterModel;
     [SerializeField] private CinemachineCamera cmCamera;
-
     [SerializeField] private CinemachineInputAxisController inputController;
-
     public int GravityDirection { get; private set; } = 1;
     public bool IsIceFriction { get; private set; } = false;
-
     private bool isLevel2;
     private bool isLevel5;
-
     private float defaultXGain;
     private float defaultYGain;
+
+    private CharacterController cc;
 
     private void Awake()
     {
         string sceneName = SceneManager.GetActiveScene().name;
         isLevel2 = (sceneName == "Level2");
         isLevel5 = (sceneName == "Level5");
+
+        cc = FindFirstObjectByType<CharacterController>();
 
         if (inputController != null && inputController.Controllers.Count >= 2)
         {
@@ -49,6 +49,13 @@ public class PlayerPhysicsModifier : MonoBehaviour
             if (characterModel != null)
             {
                 characterModel.localScale = new Vector3(1, GravityDirection, 1);
+            }
+
+            if (cc != null)
+            {
+                Vector3 newCenter = cc.center;
+                newCenter.y = isFuture ? 1f : -1f;
+                cc.center = newCenter;
             }
 
             if (cmCamera != null)

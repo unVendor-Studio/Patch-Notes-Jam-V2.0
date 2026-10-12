@@ -20,10 +20,7 @@ public class PlatformBob : MonoBehaviour
     {
         if (!isBobbing && collision.gameObject.CompareTag("Player"))
         {
-            if (collision.transform.position.y > transform.position.y)
-            {
                 StartCoroutine(BobSequence());
-            }
         }
     }
 

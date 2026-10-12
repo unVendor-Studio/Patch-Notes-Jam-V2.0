@@ -5,7 +5,7 @@ public class PlatformFall : MonoBehaviour
 {
     [Header("Drop Settings")]
     [SerializeField] private float shakeDuration = 0.8f;
-    [SerializeField] private float shakeIntensity = 0.1f;
+    [SerializeField] private float shakeIntensity = 0.5f;
     [SerializeField] private float dropDistance = 20f;
     [SerializeField] private float dropSpeed = 25f;
     [SerializeField] private float respawnTime = 2f;
@@ -22,9 +22,17 @@ public class PlatformFall : MonoBehaviour
         mesh = GetComponent<MeshRenderer>();
     }
 
+    private void OnTriggerEnter(Collider other)
+    {
+        if (!isTriggered)
+        {
+            StartCoroutine(FallSequence());
+        }
+    }
+
     private void OnCollisionEnter(Collision collision)
     {
-        if (!isTriggered && collision.gameObject.CompareTag("Player"))
+        if (!isTriggered)
         {
             StartCoroutine(FallSequence());
         }
@@ -45,7 +53,7 @@ public class PlatformFall : MonoBehaviour
         }
 
         Vector3 dropTarget = startPos - new Vector3(0, dropDistance, 0);
-        col.enabled = false; 
+        col.enabled = false;
 
         while (transform.position.y > dropTarget.y)
         {
@@ -53,7 +61,7 @@ public class PlatformFall : MonoBehaviour
             yield return null;
         }
 
-        mesh.enabled = false; 
+        mesh.enabled = false;
         yield return new WaitForSeconds(respawnTime);
 
         transform.position = startPos;

@@ -27,10 +27,6 @@ public class PlayerRespawn : MonoBehaviour
 
         if (MusicManager.Instance != null)
             MusicManager.Instance.PlayJumpSound(transform.position);
-
-        if (TimeManager.Instance != null)
-            TimeManager.Instance.DieCanvas.SetActive(true);
-
         isDying = true;
     }
 }

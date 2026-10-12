@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 5504778770373172719}
   - component: {fileID: 353827719013242148}
   - component: {fileID: 7263811472435760223}
+  - component: {fileID: 8130676480476992512}
   m_Layer: 6
   m_Name: Island
   m_TagString: Change
@@ -111,7 +112,7 @@ MeshCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 5
-  m_Convex: 1
+  m_Convex: 0
   m_CookingOptions: 30
   m_Mesh: {fileID: -870077520638187916, guid: 188e2a11e5e509c4abba62116ff74dc4, type: 3}
 --- !u!114 &7263811472435760223
@@ -126,6 +127,28 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b347ae412496f834fac38b50de0e97c3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlatformBob
-  bobDistance: 0.5
+  bobDistance: 1000
   bobSpeed: 15
   returnSpeed: 5
+--- !u!64 &8130676480476992512
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9163424736681263955}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 5
+  m_Convex: 1
+  m_CookingOptions: 30
+  m_Mesh: {fileID: -870077520638187916, guid: 188e2a11e5e509c4abba62116ff74dc4, type: 3}

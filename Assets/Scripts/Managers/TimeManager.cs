@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class TimeManager : MonoBehaviour
 {
@@ -11,7 +12,6 @@ public class TimeManager : MonoBehaviour
 
     private List<Light> futurePointLights = new List<Light>();
 
-    public GameObject DieCanvas;
 
     private void Awake()
     {
@@ -39,6 +39,7 @@ public class TimeManager : MonoBehaviour
     private void Start()
     {
         ApplyTimeState();
+
     }
 
     public void ToggleTime()

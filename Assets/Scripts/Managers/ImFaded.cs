@@ -22,7 +22,7 @@ public class ImFaded : MonoBehaviour
         if (fadeCanvas != null && blackBox != null)
         {
             StartCoroutine(FadeInRoutine());
-            GetComponent<PlayerRespawn>().isDying = false;
+            FindAnyObjectByType<PlayerRespawn>().isDying = false;
         }
     }
 
@@ -40,7 +40,7 @@ public class ImFaded : MonoBehaviour
 
     private IEnumerator FadeInRoutine()
     {
-        GetComponent<PlayerRespawn>().isDying = false;
+        FindAnyObjectByType<PlayerRespawn>().isDying = false;
 
         fadeCanvas.SetActive(true);
         Color c = blackBox.color;
@@ -60,7 +60,7 @@ public class ImFaded : MonoBehaviour
 
     private IEnumerator FadeOutRoutine(string sceneName)
     {
-        GetComponent<PlayerRespawn>().isDying = false;
+        FindAnyObjectByType<PlayerRespawn>().isDying = false;
 
         fadeCanvas.SetActive(true);
         Color c = blackBox.color;
