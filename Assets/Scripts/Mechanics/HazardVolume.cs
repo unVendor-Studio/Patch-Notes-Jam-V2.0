@@ -9,4 +9,12 @@ public class HazardVolume : MonoBehaviour
             other.GetComponent<PlayerRespawn>().Die();
         }
     }
+
+    private void OnCollisionEnter(Collision other)
+    {
+        if (other.gameObject.CompareTag("Player"))
+        {
+            other.gameObject.GetComponent<PlayerRespawn>().Die();
+        }
+    }
 }

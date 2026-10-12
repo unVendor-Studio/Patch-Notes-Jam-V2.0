@@ -138,12 +138,11 @@ GameObject:
   - component: {fileID: 1476408762352259580}
   - component: {fileID: 924942044328228543}
   - component: {fileID: 8929471563195801562}
-  - component: {fileID: 4227201256635545928}
   - component: {fileID: 8926251597696108869}
   - component: {fileID: 214297355254607265}
   m_Layer: 9
   m_Name: Player
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -219,6 +218,7 @@ MonoBehaviour:
   coyoteTime: 0.2
   jumpBufferTime: 0.2
   turnResponse: 15
+  inputController: {fileID: 0}
 --- !u!135 &924942044328228543
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -258,21 +258,6 @@ MonoBehaviour:
   dropTarget: {fileID: 2005990824121242097}
   pickUpRadius: 3
   IsHolding: 0
---- !u!114 &4227201256635545928
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7309381966369502499}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f0d43775159049344bc8c447c0472109, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::TimeManager
-  futureLayerName: Future
-  pastLayerName: Past
-  playerLayerName: Player
 --- !u!54 &8926251597696108869
 Rigidbody:
   m_ObjectHideFlags: 0

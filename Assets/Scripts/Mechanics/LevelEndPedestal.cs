@@ -1,11 +1,10 @@
 using System.Collections;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
 public class LevelEndPedestal : MonoBehaviour
 {
     [SerializeField] private string mainMenuSceneName = "MainMenu";
-    [SerializeField] private string completionMessage = "Anomaly secured. Returning to Hub.";
+    [SerializeField] private string completionMessage = "Returning to ur house";
 
     private bool hasTriggered = false;
 
@@ -20,19 +19,27 @@ public class LevelEndPedestal : MonoBehaviour
 
     private IEnumerator EndLevelSequence(GameObject player)
     {
-        if (player.TryGetComponent(out Rigidbody rb))
+        if (player.TryGetComponent(out CharacterController cc))
         {
-            rb.isKinematic = true;
-            rb.linearVelocity = Vector3.zero;
+            cc.enabled = false;
+        }
+        if (player.TryGetComponent(out PlayerInput input))
+        {
+            input.enabled = false;
         }
 
         if (AINarrator.Instance != null) AINarrator.Instance.Speak(completionMessage);
-        if (MusicManager.Instance != null) MusicManager.Instance.PlayLevelEnterWarp(); 
+        if (MusicManager.Instance != null) MusicManager.Instance.PlayLevelEnterWarp();
 
         yield return new WaitForSeconds(3.5f);
 
-        Cursor.lockState = CursorLockMode.None;
-        Cursor.visible = true;
-        SceneManager.LoadScene(mainMenuSceneName);
+        if (ImFaded.Instance != null)
+        {
+            ImFaded.Instance.FadeOutAndLoad(mainMenuSceneName);
+        }
+        else
+        {
+            UnityEngine.SceneManagement.SceneManager.LoadScene(mainMenuSceneName);
+        }
     }
 }

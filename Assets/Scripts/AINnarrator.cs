@@ -6,6 +6,7 @@ public class AINarrator : MonoBehaviour
 {
     public static AINarrator Instance;
 
+    [SerializeField] private GameObject narrativeCanvas;
     [SerializeField] private TextMeshProUGUI narratorText;
     [SerializeField] private float typingSpeed = 0.05f;
 
@@ -17,10 +18,20 @@ public class AINarrator : MonoBehaviour
         else Destroy(gameObject);
 
         narratorText.text = "";
+
+        if (narrativeCanvas != null)
+        {
+            narrativeCanvas.SetActive(false);
+        }
     }
 
     public void Speak(string message)
     {
+        if (narrativeCanvas != null)
+        {
+            narrativeCanvas.SetActive(true);
+        }
+
         if (currentCoroutine != null)
         {
             StopCoroutine(currentCoroutine);
@@ -39,9 +50,14 @@ public class AINarrator : MonoBehaviour
         }
 
         int wordCount = message.Split(' ').Length;
-        float readTime = Mathf.Max(2.0f, wordCount * 0.3f); 
+        float readTime = Mathf.Max(2.0f, wordCount * 0.3f);
 
         yield return new WaitForSeconds(readTime);
+
         narratorText.text = "";
+        if (narrativeCanvas != null)
+        {
+            narrativeCanvas.SetActive(false);
+        }
     }
 }

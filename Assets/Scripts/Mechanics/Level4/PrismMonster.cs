@@ -8,9 +8,6 @@ public class PrismMonster : MonoBehaviour
     [SerializeField] private bool isFlyingEnemy = true;
 
 
-
-
-
     [SerializeField] private bool onlyActiveInPast = true;
 
     [SerializeField] private float stareTimeToKill = 0.5f;

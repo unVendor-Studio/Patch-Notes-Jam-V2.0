@@ -1,14 +1,16 @@
 using UnityEngine;
 
-[RequireComponent(typeof(Rigidbody))]
+[RequireComponent(typeof(CharacterController))]
 public class PlayerRespawn : MonoBehaviour
 {
     private Vector3 currentRespawnPosition;
-    private Rigidbody rb;
+    private CharacterController cc;
+
+    public bool isDying = false;
 
     private void Start()
     {
-        rb = GetComponent<Rigidbody>();
+        cc = GetComponent<CharacterController>();
         currentRespawnPosition = transform.position;
     }
 
@@ -19,10 +21,16 @@ public class PlayerRespawn : MonoBehaviour
 
     public void Die()
     {
-        rb.linearVelocity = Vector3.zero;
-        rb.angularVelocity = Vector3.zero;
+        cc.enabled = false;
         transform.position = currentRespawnPosition;
+        cc.enabled = true;
 
-        MusicManager.Instance.PlayJumpSound(transform.position);
+        if (MusicManager.Instance != null)
+            MusicManager.Instance.PlayJumpSound(transform.position);
+
+        if (TimeManager.Instance != null)
+            TimeManager.Instance.DieCanvas.SetActive(true);
+
+        isDying = true;
     }
 }
