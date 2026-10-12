@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 
 public class SmallAIScripts : MonoBehaviour
@@ -5,6 +6,7 @@ public class SmallAIScripts : MonoBehaviour
     private AINarrator narrator;
 
     public string messages;
+    public bool talked = false;
     void Start()
     {
         narrator = AINarrator.Instance;
@@ -12,6 +14,17 @@ public class SmallAIScripts : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        narrator.Speak(messages);
+        if (!talked)
+        {
+            narrator.Speak(messages);
+            StartCoroutine(startTalking());
+        }
+    }
+
+    IEnumerator startTalking()
+    {
+        talked = true;
+        yield return new WaitForSeconds(5);
+        talked = false;
     }
 }
