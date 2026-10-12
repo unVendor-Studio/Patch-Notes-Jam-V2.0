@@ -17,6 +17,8 @@ public class LevelPaper : MonoBehaviour
     private bool isBeingInspected = false;
     private bool isHovered = false;
 
+    public bool canGo;
+
     void Start()
     {
         originalPosition = transform.position;
