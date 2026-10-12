@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using PrimeTween;
 using Unity.Cinemachine;
 using UnityEngine;
@@ -20,30 +21,31 @@ public class PickUpItems : MonoBehaviour
     {
         if (!IsHolding)
         {
-            var colliders = Physics.OverlapSphere(transform.position, pickUpRadius, LayerMask.GetMask("PickUp"));
-            if (colliders.Length == 0)
+            List<Pickupable> foundComponents = new List<Pickupable>();
+            var colliders = Physics.OverlapSphere(transform.position, pickUpRadius);
+            
+            float closestObjectToPlayer = float.MaxValue;
+            foreach (var col in colliders)
+            {
+                if (col.TryGetComponent<Pickupable>(out var pickup)) {
+                    float dist = Vector3.Distance(transform.position, col.transform.position);
+                    if (dist < closestObjectToPlayer)
+                    {
+                        closestObjectToPlayer = Vector3.Distance(transform.position, col.transform.position);
+                        closestObject = col;
+                    }
+                    foundComponents.Add(pickup);
+                }
+            }
+            if (foundComponents.Count == 0)
             {
                 ToggleHighlight(false);
                 closestObject = null;
                 return;
             }
-            float closestObjectToPlayer = float.MaxValue;
-            foreach (var col in colliders)
-            {
-                
-                float dist = Vector3.Distance(transform.position, col.transform.position);
-                if (dist < closestObjectToPlayer)
-                {
-                    closestObjectToPlayer = Vector3.Distance(transform.position, col.transform.position);
-                    closestObject = col;
-                }
-            }
             UpdateHighlight(closestObject);
         }
-        else
-        {
-            
-        }
+
     }
 
     private void UpdateHighlight(Collider col)
@@ -91,6 +93,10 @@ public class PickUpItems : MonoBehaviour
         closestObject.transform.SetParent(this.transform);
         Vector3 localTarget = this.transform.InverseTransformPoint(target.position);
         Tween.LocalPosition(closestObject.transform, localTarget, duration: 0.2f);
+        if (closestObject.TryGetComponent<Rigidbody>(out var rigid))
+        {
+            rigid.isKinematic = true;
+        }
         
     }
 
@@ -100,6 +106,10 @@ public class PickUpItems : MonoBehaviour
         IsHolding = false;
         closestObject.transform.SetParent(null);
         Tween.Position(closestObject.transform, dropTarget.position, duration: 0.2f);
+        if (closestObject.TryGetComponent<Rigidbody>(out var rigid))
+        {
+            rigid.isKinematic = false;
+        }
         
     }
 

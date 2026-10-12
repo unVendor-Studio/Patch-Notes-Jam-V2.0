@@ -22,6 +22,9 @@ public class PlayerInput : MonoBehaviour
     [SerializeField] private float jumpBufferTime = 0.2f;
     [Header("Camera Settings")]
     [SerializeField] private float turnResponse = 15f;
+
+    public bool IsCharged;
+
     private InputSystem inputSystem;
     private PickUpItems pickUp;
     private PlayerPhysicsModifier physicsMod;
