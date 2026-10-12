@@ -37,7 +37,7 @@ public class PlayerPhysicsModifier : MonoBehaviour
 
     private void Start()
     {
-        HandlePhysicsChange(TimeManager.IsFuture);
+        HandlePhysicsChange(TimeManager.Instance.IsFuture);
     }
 
     private void HandlePhysicsChange(bool isFuture)

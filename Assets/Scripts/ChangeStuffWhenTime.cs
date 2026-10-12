@@ -15,7 +15,7 @@ public class EnvironmentManager : MonoBehaviour
     {
         changingObjects = GameObject.FindGameObjectsWithTag(targetTag);
 
-        UpdateEnvironment(TimeManager.IsFuture);
+        UpdateEnvironment(TimeManager.Instance.IsFuture);
     }
 
     private void OnEnable() => TimeManager.OnTimeSwapped += UpdateEnvironment;

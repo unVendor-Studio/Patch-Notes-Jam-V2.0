@@ -7,7 +7,7 @@ public class GravityVortex : MonoBehaviour
 
     private void OnTriggerStay(Collider other)
     {
-        if (onlyActiveInPast && TimeManager.IsFuture) return;
+        if (onlyActiveInPast && TimeManager.Instance.IsFuture) return;
 
         if (other.TryGetComponent(out Rigidbody rb))
         {

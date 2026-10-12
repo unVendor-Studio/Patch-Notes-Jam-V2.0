@@ -4,7 +4,7 @@ public class PrismMonster : MonoBehaviour
 {
     [Header("Movement")]
     private float chaseSpeed = 2f;
-    private float retreatSpeed = 12f;
+    private float retreatSpeed = 20f;
 
     [SerializeField] private bool onlyActiveInPast = true;
     [SerializeField] private float stareTimeToKill = 0.5f;
@@ -35,7 +35,7 @@ public class PrismMonster : MonoBehaviour
             player = playerObj.transform;
         }
 
-        UpdateTimelineState(TimeManager.IsFuture);
+        UpdateTimelineState(TimeManager.Instance.IsFuture);
     }
 
     private void OnEnable() => TimeManager.OnTimeSwapped += UpdateTimelineState;

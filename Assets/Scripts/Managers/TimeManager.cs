@@ -8,7 +8,7 @@ public class TimeManager : MonoBehaviour
     public static TimeManager Instance { get; private set; }
     public static event Action<bool> OnTimeSwapped;
 
-    public static bool IsFuture { get; private set; } = true;
+    public bool IsFuture { get; private set; } = true;
 
     private List<Light> futurePointLights = new List<Light>();
 
