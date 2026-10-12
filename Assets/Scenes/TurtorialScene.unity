@@ -1108,6 +1108,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::SmallAIScripts
   messages: In case you don't know, this dirt wall is from the past. Changing to
     the future might make it dissapear.
+  talked: 0
 --- !u!4 &280753789
 Transform:
   m_ObjectHideFlags: 0
@@ -1351,6 +1352,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SmallAIScripts
   messages: WASD to Walk, Space to Jump and Shift to Run
+  talked: 0
 --- !u!4 &453592423
 Transform:
   m_ObjectHideFlags: 0
@@ -2341,6 +2343,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SmallAIScripts
   messages: You might want to spam E
+  talked: 0
 --- !u!65 &955509683
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -3372,6 +3375,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::SmallAIScripts
   messages: E To change timeline. When in the past, the system will be off and physics
     might get mess up. However, Objects from Future will all dissapear and vice verse.
+  talked: 0
 --- !u!4 &1230754105
 Transform:
   m_ObjectHideFlags: 0
@@ -8790,8 +8794,8 @@ Transform:
   m_GameObject: {fileID: 832149485130532827}
   serializedVersion: 2
   m_LocalRotation: {x: -0.50000006, y: 0.49999997, z: 0.50000006, w: 0.49999997}
-  m_LocalPosition: {x: -10.6, y: 5.8799996, z: -26.49}
-  m_LocalScale: {x: 50, y: 50, z: 50}
+  m_LocalPosition: {x: -10.592, y: 6.72, z: -26.484}
+  m_LocalScale: {x: 70.990005, y: 70.990005, z: 70.990005}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1359039613}
@@ -9022,27 +9026,27 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 4039128507977285930, guid: bf1226a9a358362428c0a563ef1ed896, type: 3}
       propertyPath: m_LocalScale.x
-      value: 25
+      value: 48.650665
       objectReference: {fileID: 0}
     - target: {fileID: 4039128507977285930, guid: bf1226a9a358362428c0a563ef1ed896, type: 3}
       propertyPath: m_LocalScale.y
-      value: 25
+      value: 48.650665
       objectReference: {fileID: 0}
     - target: {fileID: 4039128507977285930, guid: bf1226a9a358362428c0a563ef1ed896, type: 3}
       propertyPath: m_LocalScale.z
-      value: 25
+      value: 48.650665
       objectReference: {fileID: 0}
     - target: {fileID: 4039128507977285930, guid: bf1226a9a358362428c0a563ef1ed896, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -54.57
+      value: -54.576
       objectReference: {fileID: 0}
     - target: {fileID: 4039128507977285930, guid: bf1226a9a358362428c0a563ef1ed896, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 14.075
+      value: 14.93
       objectReference: {fileID: 0}
     - target: {fileID: 4039128507977285930, guid: bf1226a9a358362428c0a563ef1ed896, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -115.8065
+      value: -115.28
       objectReference: {fileID: 0}
     - target: {fileID: 4039128507977285930, guid: bf1226a9a358362428c0a563ef1ed896, type: 3}
       propertyPath: m_LocalRotation.w
