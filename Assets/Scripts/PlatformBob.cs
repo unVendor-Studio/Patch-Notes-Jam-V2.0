@@ -9,23 +9,30 @@ public class PlatformBob : MonoBehaviour
     [SerializeField] private float returnSpeed = 5f;
 
     private Vector3 startPos;
-    private bool isBobbing = false;
+    public bool isBobbing = false;
 
     private void Start()
     {
         startPos = transform.position;
     }
 
-    private void OnCollisionEnter(Collision collision)
+    private void OnTriggerEnter(Collider collision)
     {
-        if (!isBobbing && collision.gameObject.CompareTag("Player"))
+        if (!isBobbing)
         {
-                StartCoroutine(BobSequence());
+            StartCoroutine(BobSequence());
         }
     }
-
+    //private void OnControllerColliderHit(ControllerColliderHit hit)
+    //{
+    //    if (!isBobbing)
+    //    {
+    //        StartCoroutine(BobSequence());
+    //    }
+    //}
     private IEnumerator BobSequence()
     {
+        MusicManager.Instance.PlayCubeThud(transform.position);
         isBobbing = true;
         Vector3 targetPos = startPos - new Vector3(0, bobDistance, 0);
 

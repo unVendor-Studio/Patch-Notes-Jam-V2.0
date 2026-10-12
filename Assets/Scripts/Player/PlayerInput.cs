@@ -78,15 +78,17 @@ public class PlayerInput : MonoBehaviour
         {
             timeSinceJumpRequest = 0;
         }
-        Vector3 moveDir = new Vector3(movement.x, 0, movement.y);
+        int gravDir = physicsMod != null ? physicsMod.GravityDirection : 1;
+
+        Vector3 moveDir = new Vector3(movement.x * gravDir, 0, movement.y);
         moveDir = Vector3.ClampMagnitude(moveDir, 1);
+
         if (interact) StartCoroutine(ToggleTimeRoutine());
         if (click)
         {
             if (pickUp.IsHolding) pickUp.PlaceDown();
             else pickUp.PickUp();
         }
-        int gravDir = physicsMod != null ? physicsMod.GravityDirection : 1;
         bool isIce = physicsMod != null && physicsMod.IsIceFriction;
         float currentFriction = isIce ? 1.5f : sprintResponse;
         if (moveDir.sqrMagnitude >= 0.1f)
@@ -113,6 +115,7 @@ public class PlayerInput : MonoBehaviour
             {
                 wasUngroundedByJump = true;
                 verticalVelocity = jumpStrength * gravDir;
+                MusicManager.Instance.PlayJumpSound(transform.position);
             }
             else
             {
@@ -145,7 +148,9 @@ public class PlayerInput : MonoBehaviour
     private IEnumerator ToggleTimeRoutine()
     {
         animator.SetTrigger("ToggleTime");
+        MusicManager.Instance.PlayDeviceClick(transform.position);
         yield return new WaitForSeconds(0.2f);
         TimeManager.Instance.ToggleTime();
+        MusicManager.Instance.PlaySwapToPast(transform.position);
     }
 }

@@ -30,16 +30,9 @@ public class PlatformFall : MonoBehaviour
         }
     }
 
-    private void OnCollisionEnter(Collision collision)
-    {
-        if (!isTriggered)
-        {
-            StartCoroutine(FallSequence());
-        }
-    }
-
     private IEnumerator FallSequence()
     {
+        MusicManager.Instance.PlayCubeScrape(transform.position);
         isTriggered = true;
         float elapsed = 0f;
 

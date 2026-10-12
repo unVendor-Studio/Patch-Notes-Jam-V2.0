@@ -441,10 +441,10 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 3901961518087745745}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 200, y: 50}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
+  m_AnchoredPosition: {x: 0, y: -5}
+  m_SizeDelta: {x: -100, y: -30}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &3020383184733672470
 CanvasRenderer:
@@ -1557,7 +1557,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &7694404890117614315
 RectTransform:
   m_ObjectHideFlags: 0
@@ -2203,11 +2203,11 @@ MonoBehaviour:
   aiNarratorBeepVolume: 1
   deviceClick: {fileID: 8300000, guid: 4c7a1670c5d410e4da890a54346364d6, type: 3}
   deviceClickVolume: 1
-  swapToPast: {fileID: 8300000, guid: 4d159fd65b294a54891220f8ad55198b, type: 3}
+  swapToPast: {fileID: 8300000, guid: 58660f8b4ca163545b56c1d96e4439f8, type: 3}
   swapToPastVolume: 1
   swapToFuture: {fileID: 8300000, guid: 402ed18b07c5a4b498cb285235d88734, type: 3}
   swapToFutureVolume: 1
-  footsteps: {fileID: 0}
+  footsteps: {fileID: 8300000, guid: 0e995429fa6edad47b2748bada3c97d7, type: 3}
   footstepsVolume: 1
   jumpSound: {fileID: 8300000, guid: 5a7e9fad4ea036f498b77a293a8b9081, type: 3}
   jumpSoundVolume: 1
@@ -2215,7 +2215,7 @@ MonoBehaviour:
   sprintLoopVolume: 1
   doorSound: {fileID: 0}
   doorSoundVolume: 1
-  cubeScrape: {fileID: 8300000, guid: e54da1a30991c03429d29fcdc780ec44, type: 3}
+  cubeScrape: {fileID: 8300000, guid: 0e9240bdbf41e154e99e510e31a7c2ed, type: 3}
   cubeScrapeVolume: 1
   cubeThud: {fileID: 8300000, guid: 903afaa1b74a2b74c93d98c656a2560e, type: 3}
   cubeThudVolume: 1
@@ -2231,9 +2231,9 @@ MonoBehaviour:
   nodePowerUpVolume: 1
   nodeAccessGranted: {fileID: 0}
   nodeAccessGrantedVolume: 1
-  monsterRush: {fileID: 0}
+  monsterRush: {fileID: 8300000, guid: 279fe5df68901634d9463e0d4ce44352, type: 3}
   monsterRushVolume: 1
-  monsterRetreat: {fileID: 0}
+  monsterRetreat: {fileID: 8300000, guid: 8f935a3fe8f9390489c11d2e0932f14b, type: 3}
   monsterRetreatVolume: 1
 --- !u!114 &7323506642879623480
 MonoBehaviour:

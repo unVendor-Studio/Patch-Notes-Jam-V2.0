@@ -31,7 +31,7 @@ public class AINarrator : MonoBehaviour
         {
             narrativeCanvas.SetActive(true);
         }
-
+        MusicManager.Instance.PlayAINarratorBeep();
         if (currentCoroutine != null)
         {
             StopCoroutine(currentCoroutine);

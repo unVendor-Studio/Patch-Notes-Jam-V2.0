@@ -45,7 +45,7 @@ public class PlayerPhysicsModifier : MonoBehaviour
         if (isLevel2)
         {
             GravityDirection = isFuture ? 1 : -1;
-
+            MusicManager.Instance.PlayGravityInversion(transform.position);
             if (characterModel != null)
             {
                 characterModel.localScale = new Vector3(1, GravityDirection, 1);
