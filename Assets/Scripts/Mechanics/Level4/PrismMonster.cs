@@ -3,52 +3,39 @@ using UnityEngine;
 public class PrismMonster : MonoBehaviour
 {
     [Header("Movement")]
-    [SerializeField] private float chaseSpeed = 4.5f;
-    [SerializeField] private float retreatSpeed = 8f;
-    [SerializeField] private bool isFlyingEnemy = true;
-
+    private float chaseSpeed = 2f;
+    private float retreatSpeed = 12f;
 
     [SerializeField] private bool onlyActiveInPast = true;
-
     [SerializeField] private float stareTimeToKill = 0.5f;
 
-    [SerializeField] private float lookThreshold = 0.75f;
-
+    [Header("Vision Settings")]
+    [Tooltip("Lower this number (e.g., 0.3) to make the vision cone wider. 1 = pinpoint accuracy.")]
+    [SerializeField] private float lookThreshold = 0.5f;
     [SerializeField] private float sightRange = 30f;
 
     private Transform player;
     private Camera mainCam;
     private bool isActiveInCurrentTimeline = false;
     private bool isFleeing = false;
-
     private float currentStareTime = 0f;
+
+    private Collider col;
+    private Renderer[] meshes;
 
     private void Start()
     {
         mainCam = Camera.main;
+        col = GetComponent<Collider>();
+        meshes = GetComponentsInChildren<Renderer>();
 
         GameObject playerObj = GameObject.FindGameObjectWithTag("Player");
         if (playerObj != null)
         {
             player = playerObj.transform;
-            SpawnBehindPlayer();
         }
 
         UpdateTimelineState(TimeManager.IsFuture);
-    }
-
-    private void SpawnBehindPlayer()
-    {
-        float randomDistance = Random.Range(10f, 15f);
-
-        Vector3 spawnDir = -mainCam.transform.forward;
-
-        if (!isFlyingEnemy) spawnDir.y = 0;
-
-        Vector3 spawnPos = player.position + (spawnDir.normalized * randomDistance);
-        if (!isFlyingEnemy) spawnPos.y = transform.position.y;
-
-        transform.position = spawnPos;
     }
 
     private void OnEnable() => TimeManager.OnTimeSwapped += UpdateTimelineState;
@@ -57,6 +44,12 @@ public class PrismMonster : MonoBehaviour
     private void UpdateTimelineState(bool isFuture)
     {
         isActiveInCurrentTimeline = onlyActiveInPast ? !isFuture : isFuture;
+
+        if (col != null) col.enabled = isActiveInCurrentTimeline;
+        foreach (var mesh in meshes)
+        {
+            mesh.enabled = isActiveInCurrentTimeline;
+        }
 
         if (isActiveInCurrentTimeline && !isFleeing)
         {
@@ -69,6 +62,8 @@ public class PrismMonster : MonoBehaviour
     {
         if (!isActiveInCurrentTimeline || player == null) return;
 
+        transform.LookAt(player.position);
+
         if (isFleeing)
         {
             Vector3 fleeDirection = (transform.position - player.position).normalized;
@@ -77,10 +72,7 @@ public class PrismMonster : MonoBehaviour
         }
 
         Vector3 targetPos = player.position;
-        if (!isFlyingEnemy) targetPos.y = transform.position.y;
-
         transform.position = Vector3.MoveTowards(transform.position, targetPos, chaseSpeed * Time.deltaTime);
-        transform.LookAt(targetPos);
 
         CheckPlayerSight();
     }
@@ -98,9 +90,12 @@ public class PrismMonster : MonoBehaviour
         Vector3 directionToMonster = (transform.position - mainCam.transform.position).normalized;
         float lookDot = Vector3.Dot(mainCam.transform.forward, directionToMonster);
 
+        // This checks if the monster falls within your new wider vision cone
         if (lookDot >= lookThreshold)
         {
-            if (Physics.Raycast(mainCam.transform.position, directionToMonster, out RaycastHit hit, sightRange))
+            int layerMask = ~LayerMask.GetMask("Player");
+
+            if (Physics.Raycast(mainCam.transform.position, directionToMonster, out RaycastHit hit, sightRange, layerMask))
             {
                 if (hit.collider.gameObject == gameObject)
                 {

@@ -13,8 +13,6 @@ public class LightSourcePickup : MonoBehaviour
             playerLightAura.SetActive(true);
 
                 AINarrator.Instance.Speak(narrativeText);
-
-            Destroy(gameObject); 
         }
     }
 }
