@@ -1,34 +1,82 @@
+using Unity.Cinemachine;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
-[RequireComponent(typeof(Rigidbody), typeof(Collider))]
+[RequireComponent(typeof(CharacterController))]
 public class PlayerPhysicsModifier : MonoBehaviour
 {
-    private Rigidbody rb;
-    private Collider col;
+    [SerializeField] private Transform characterModel;
+    [SerializeField] private CinemachineCamera cmCamera;
 
-    [Header("Level 2: Gravity (Past Inverts)")]
-    public bool levelHasGravityGimmick = false;
-    private float defaultGravityY = -9.81f;
+    [SerializeField] private CinemachineInputAxisController inputController;
 
-    [Header("Level 5: Friction (Past is Ice)")]
-    public bool levelHasFrictionGimmick = false;
+    public int GravityDirection { get; private set; } = 1;
+    public bool IsIceFriction { get; private set; } = false;
+
+    private bool isLevel2;
+    private bool isLevel5;
+
+    private float defaultXGain;
+    private float defaultYGain;
 
     private void Awake()
     {
-        rb = GetComponent<Rigidbody>();
-        col = GetComponent<Collider>();
+        string sceneName = SceneManager.GetActiveScene().name;
+        isLevel2 = (sceneName == "Level2");
+        isLevel5 = (sceneName == "Level5");
+
+        if (inputController != null && inputController.Controllers.Count >= 2)
+        {
+            defaultXGain = inputController.Controllers[0].Input.Gain;
+            defaultYGain = inputController.Controllers[1].Input.Gain;
+        }
     }
 
     private void OnEnable() => TimeManager.OnTimeSwapped += HandlePhysicsChange;
     private void OnDisable() => TimeManager.OnTimeSwapped -= HandlePhysicsChange;
 
+    private void Start()
+    {
+        HandlePhysicsChange(TimeManager.IsFuture);
+    }
+
     private void HandlePhysicsChange(bool isFuture)
     {
-        if (levelHasGravityGimmick)
+        if (isLevel2)
         {
-            Physics.gravity = isFuture ? new Vector3(0, defaultGravityY, 0) : new Vector3(0, -defaultGravityY, 0);
+            GravityDirection = isFuture ? 1 : -1;
 
-            transform.localScale = isFuture ? Vector3.one : new Vector3(1, -1, 1);
+            if (characterModel != null)
+            {
+                characterModel.localScale = new Vector3(1, GravityDirection, 1);
+            }
+
+            if (cmCamera != null)
+            {
+                var lens = cmCamera.Lens;
+                lens.Dutch = isFuture ? 0 : 180;
+                cmCamera.Lens = lens;
+            }
+
+            if (inputController != null && inputController.Controllers.Count >= 2)
+            {
+                var controllerX = inputController.Controllers[0];
+                var inputX = controllerX.Input;
+                inputX.Gain = isFuture ? defaultXGain : -defaultXGain;
+                controllerX.Input = inputX;
+                inputController.Controllers[0] = controllerX;
+
+                var controllerY = inputController.Controllers[1];
+                var inputY = controllerY.Input;
+                inputY.Gain = isFuture ? defaultYGain : -defaultYGain;
+                controllerY.Input = inputY;
+                inputController.Controllers[1] = controllerY;
+            }
+        }
+
+        if (isLevel5)
+        {
+            IsIceFriction = !isFuture;
         }
     }
 }
